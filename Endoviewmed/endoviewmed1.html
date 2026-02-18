@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equipos Médicos</title>
+
+<style>
+body { margin:0; font-family:Arial,sans-serif; text-align:center; }
+#mainPage { background-color:#ce37c6; color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; }
+#mainPage h1 { font-size:60px; margin-bottom:50px; }
+.bottom-buttons { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; position:absolute; bottom:40px; width:100%; }
+.bottom-buttons button { background:white; color:#7b5fcf; padding:15px 25px; border:none; border-radius:10px; cursor:pointer; font-size:16px; min-width:130px; transition:0.3s; }
+.bottom-buttons button:hover { background:#e0d4f7; }
+
+.section { display:none; padding:50px; min-height:100vh; text-align:center; }
+
+#ultrasonidoSection h1 { font-size:50px; color:#ec57bb; margin-bottom:40px; }
+
+.model-buttons button { 
+  background:white; 
+  border:2px solid #ec57bb; 
+  color:black; 
+  padding:15px 25px; 
+  border-radius:10px; 
+  cursor:pointer; 
+  font-size:16px; 
+  min-width:100px; 
+  margin:10px; 
+  transition:0.3s; 
+}
+.model-buttons button:hover { background:#ec57bb; color:white; }
+
+#p60View h2 { font-size:40px; color:#ec57bb; margin-bottom:20px; }
+#ultrasoundWrapper { display:flex; justify-content:center; align-items:flex-start; gap:20px; position:relative; }
+
+#endoviewmed { 
+  width:600px; 
+  height:450px;  
+  transition: transform 0.5s ease; 
+  cursor:pointer; 
+  transform-origin: center center; 
+}
+
+#modeButtons { 
+  display:flex; 
+  flex-direction:column; 
+  position:absolute; 
+  top:0; 
+  left:-220px; 
+  opacity:0; 
+  transition: all 0.5s ease; 
+}
+#modeButtons.show { 
+  transform: translateX(220px); 
+  opacity:1; 
+}
+
+#modeButtons button { 
+  margin:10px 0; 
+  background:#ec57bb; 
+  color:white; 
+  border:none; 
+  padding:10px; 
+  border-radius:8px; 
+  cursor:pointer; 
+  width:180px; 
+}
+#modeButtons button:hover { background:#b13f9d; }
+
+/* 🔥 AGRANDAMOS CONTENEDOR */
+#modeDisplay { 
+  width:900px;   
+  height:600px;  
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  margin-left:10px; 
+}
+
+.back-button { margin-top:30px; background:#7b5fcf; color:white; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; }
+.back-button:hover { background:#5a45a0; }
+</style>
+</head>
+<body>
+
+<div id="mainPage">
+  <h1>EQUIPOS MÉDICOS</h1>
+  <div class="bottom-buttons">
+    <button onclick="showSection('ultrasonidoSection')">Ultrasonido</button>
+    <button onclick="alert('Endoscopia aún no implementada')">Endoscopia</button>
+    <button onclick="alert('Laparoscopia aún no implementada')">Laparoscopia</button>
+    <button onclick="alert('Arco en C aún no implementada')">Arco en C</button>
+  </div>
+</div>
+
+<div id="ultrasonidoSection" class="section">
+  <h1>SONOSCAPE</h1>
+  <div class="model-buttons">
+    <button onclick="showP60()">P60</button>
+    <button onclick="alert('E2 aún no implementado')">E2</button>
+    <button onclick="alert('X5 aún no implementado')">X5</button>
+    <button onclick="alert('P12 ELITE aún no implementado')">P12 ELITE</button>
+  </div>
+  <button class="back-button" onclick="goBack('mainPage')">← Volver a equipos</button>
+</div>
+
+<div id="p60View" class="section">
+  <h2>Sistema de Ultrasonido P60</h2>
+
+  <div id="ultrasoundWrapper">
+    <img id="endoviewmed" src="descarga (1).png" alt="P60">
+    
+    <div id="modeButtons">
+      <button onclick="showMode('F-Fetus')">F-Fetus</button>
+      <button onclick="showMode('S-Thyroid')">S-Thyroid</button>
+      <button onclick="showMode('CEUS')">CEUS</button>
+      <button onclick="showMode('Micro F')">Micro F</button>
+      <button onclick="showMode('Cardiovascular Avanzado')">Cardiovascular Avanzado</button>
+    </div>
+    
+    <div id="modeDisplay"></div>
+  </div>
+
+  <button class="back-button" onclick="goBack('ultrasonidoSection')">← Volver a modelos</button>
+</div>
+
+<script>
+
+function showSection(id){
+  document.getElementById('mainPage').style.display='none';
+  document.getElementById('ultrasonidoSection').style.display='none';
+  document.getElementById('p60View').style.display='none';
+  document.getElementById(id).style.display='block';
+  resetView();
+}
+
+function goBack(id){ showSection(id); }
+function showP60(){ showSection('p60View'); }
+
+function resetView(){
+  document.getElementById('modeButtons').classList.remove('show');
+  document.getElementById('endoviewmed').style.transform='scale(1)';
+  document.getElementById('modeDisplay').innerHTML='';
+}
+
+document.getElementById('endoviewmed').addEventListener('click', function(e){
+  const rect = this.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const clickY = e.clientY - rect.top;
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  const radius = 70;
+
+  const distance = Math.sqrt((clickX-centerX)**2 + (clickY-centerY)**2);
+
+  if(distance <= radius){
+
+    const isZoomed = this.style.transform === 'scale(2)';
+
+    if(isZoomed){
+      this.style.transform = 'scale(1)';
+      document.getElementById('modeButtons').classList.remove('show');
+
+      const display = document.getElementById('modeDisplay');
+      const video = display.querySelector("video");
+      if(video){
+        video.pause();
+        video.currentTime = 0;
+      }
+      display.innerHTML='';
+
+    } else {
+      this.style.transform = 'scale(2)';
+      document.getElementById('modeButtons').classList.add('show');
+    }
+  }
+});
+
+function showMode(mode){
+  const display = document.getElementById('modeDisplay');
+  let file='';
+
+  switch(mode){
+    case 'F-Fetus': file='20260217_190445_Export.mp4'; break;
+    case 'S-Thyroid': file='20260217_192657_Export.mp4'; break;
+    case 'CEUS': file='WhatsApp Image 2026-02-17 at 19.34.48.jpeg'; break;
+    case 'Micro F': file='WhatsApp Image 2026-02-17 at 19.41.50.jpeg'; break;
+    case 'Cardiovascular Avanzado': file='WhatsApp Image 2026-02-17 at 19.53.41.jpeg'; break;
+  }
+
+  if(file.endsWith('.mp4')){
+    display.innerHTML = `
+      <video width="100%" height="100%" controls autoplay>
+        <source src="${file}" type="video/mp4">
+      </video>
+    `;
+  } else {
+    display.innerHTML = `
+      <img src="${file}" 
+           style="width:160px; height:auto; object-fit:contain;">
+    `;
+  }
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
