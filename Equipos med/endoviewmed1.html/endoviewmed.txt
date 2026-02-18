@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equipos Médicos</title>
+<style>
+    /* Estilos generales */
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f06ac3; /* Fondo violeta */
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Ocupa toda la pantalla */
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+
+    h1 {
+        font-size: 60px; /* Texto grande */
+        letter-spacing: 2px;
+    }
+</style>
+</head>
+<body>
+    <h1>EQUIPOS MÉDICOS</h1>
+</body>
+</html>
